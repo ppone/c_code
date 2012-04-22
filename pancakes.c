@@ -2,14 +2,14 @@
 #include <time.h>
 #include <stdlib.h>
  
-#define ValType int
+#define ValType double
 #define IS_LESS(v1, v2)  (v1 < v2)
 
 
 
 int compare (const void * a, const void * b)
 {
-  return ( *(int*)a - *(int*)b );
+  return ( *(double*)a - *(double*)b );
 }
 
 //void do_flip(int *list, int length, int num);
@@ -28,27 +28,26 @@ void do_flip(int *list, int length, int num)
 
 //void  quick_sort (int *a, int n, int *swap_count);
 
-void quick_sort (int *a, int n, int *swap_count) {
+void quick_sort (double *a, int n) {
  
   if (n < 2)
     return;
-  int p = a[n / 2];
-  int *l = a;
-  int *r = a + n - 1;
+  double p = a[n / 2];
+  double *l = a;
+  double *r = a + n - 1;
   while (l <= r) {
     while (*l < p)
       l++;
     while (*r > p)
       r--;
     if (l <= r) {
-      int t = *l;
+      double t = *l;
       *l++ = *r;
       *r-- = t;
-      (*swap_count)++;
     }
   }
-  quick_sort(a, r - a + 1,swap_count);
-  quick_sort(l, a + n - l,swap_count);
+  quick_sort(a, r - a + 1);
+  quick_sort(l, a + n - l);
 }
 
 int pancake_sort(int *list, unsigned int length);
@@ -135,15 +134,15 @@ void siftDown( ValType *a, int start, int end)
       return;
   }
 }
-void print_array(int *list, int n);
+void print_array(double *list, int n);
 
-void print_array(int *list, int n)
+void print_array(double *list, int n)
 {
   int i = 0;
   printf("Printing array: ");
   for ( i = 0; i < n; i++)
     {
-      printf("%d ", list[i]);
+      printf("%f ", list[i]);
     }
   printf("\n");
 
@@ -152,22 +151,22 @@ void print_array(int *list, int n)
 int main(int argc, char **argv)
 {
   //Just need some random numbers. I chose <100
-  int  *list;
-  int *list2;
-  int *list3;
+  double  *list;
+  double *list2;
+  double *list3;
   int i;
   int x = atoi(argv[1]);
-  srand(time(NULL));
+  srand((unsigned)time(NULL));
   /*for(i=0;i<900000;i++)
     {  list[i]=rand()%100;
      
     }*/
-  list2 = (int *)malloc(x * sizeof(int));
-  list3 = (int *)malloc(x * sizeof(int));
-  list = (int *)malloc(x * sizeof(int));
+  list2 = (double *)malloc(x * sizeof(double));
+  list3 = (double *)malloc(x * sizeof(double));
+  list = (double *)malloc(x * sizeof(double));
 
  for (i=0;i<x;i++)
-    list2[i]= rand()%100000; 
+   list2[i]= 1000*(((double)rand()/(double)RAND_MAX));
 
   for (i=0;i<x;i++)
     list3[i]= list2[i];
@@ -175,10 +174,10 @@ int main(int argc, char **argv)
   for (i=0;i<x;i++)
     list[i]= list2[i];
 
-  printf("sample ints are %d %d %d",list2[2000],list2[20000],list2[200000]);
+  //  printf("sample ints are %f %f %f",list2[2000],list2[20000],list2[200000]);
   //Print list, run code and print it again displaying number of moves
   // printf("\nOriginal: ");
-  //print_array(list, 30000);
+  print_array(list, 100);
   time_t start,end;
   double diff;
  
@@ -199,14 +198,14 @@ int main(int argc, char **argv)
   sc  = &swap_count;
   
   time (&start);
-  quick_sort (list2,x,sc);
+  quick_sort (list2,x);
   time (&end);  
   
   diff = difftime (end,start);
 
   printf("\nSorted: ");
   // print_array(list2, 100000);
-  printf(" Quick Sort  - with a total of %d moves\n", swap_count); 
+  // printf(" Quick Sort  - with a total of %d moves\n", swap_count); 
   printf ("Quick Sort takes  %.2lf seconds \n", diff );
 
 
